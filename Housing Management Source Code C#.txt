@@ -1,0 +1,160 @@
+  using MySql.Data.MySqlClient;
+
+
+
+     Database Connection
+
+
+     private MySqlConnection connection;
+
+public DatabaseConnection()
+{
+    string connectionString = "Server=127.0.0.1;Database=HouseDB;Uid=root;Pwd=Vxymai54786666@;";
+    connection = new MySqlConnection(connectionString);
+}
+
+public MySqlConnection GetConnection()
+{
+    return connection;
+}
+
+
+
+
+  Insert Code
+
+
+  int residentid = int.Parse(textBox1.Text);
+string name = textBox2.Text;
+string age = textBox3.Text;
+string email = textBox4.Text;
+string phone = textBox5.Text;
+string occupation = textBox6.Text;
+string unitname = textBox7.Text;
+string unittype = textBox8.Text;
+string address = textBox9.Text;
+string status = textBox10.Text;
+int amount = int.Parse(textBox11.Text);
+
+string query = "INSERT INTO House (ResidentID, Name, Age, Email, Phone, Occupation, UnitName, UnitType, Address, Status, Amount) VALUES (@ResidentID, @Name, @Age, @Email, @Phone, @Occupation, @UnitName, @UnitType, @Address, @Status, @Amount)";
+
+using (MySqlConnection conn = new DatabaseConnection().GetConnection())
+{
+    conn.Open();
+    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+    {
+        cmd.Parameters.AddWithValue("@ResidentID", residentid);
+        cmd.Parameters.AddWithValue("@Name", name);
+        cmd.Parameters.AddWithValue("@Age", age);
+        cmd.Parameters.AddWithValue("@Email", email);
+        cmd.Parameters.AddWithValue("@Phone", phone);
+        cmd.Parameters.AddWithValue("@Occupation", occupation);
+        cmd.Parameters.AddWithValue("@UnitName", unitname);
+        cmd.Parameters.AddWithValue("@UnitType", unittype);
+        cmd.Parameters.AddWithValue("@Address", address);
+        cmd.Parameters.AddWithValue("@Status", status);
+        cmd.Parameters.AddWithValue("@Amount", amount);
+
+        cmd.ExecuteNonQuery();
+    }
+}
+
+MessageBox.Show("Record Inserted Successfully");
+ShowData();
+
+
+
+
+
+
+
+     ShowData Code
+
+
+      string query = "SELECT * FROM House";
+
+using (MySqlConnection conn = new DatabaseConnection().GetConnection())
+{
+    conn.Open();
+    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+    {
+        using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+        {
+            DataTable dataTable = new DataTable();
+            adapter.Fill(dataTable);
+            dataGridView1.DataSource = dataTable;
+        }
+    }
+}
+
+
+
+
+
+   Delete Code
+
+
+
+    int residentid = int.Parse(textBox1.Text);
+
+string query = "DELETE FROM House WHERE ResidentID=@ResidentID";
+
+using (MySqlConnection conn = new DatabaseConnection().GetConnection())
+{
+    conn.Open();
+    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+    {
+        cmd.Parameters.AddWithValue("@ResidentID", residentid);
+
+        cmd.ExecuteNonQuery();
+    }
+}
+
+MessageBox.Show("Record Deleted Successfully");
+ShowData();
+
+
+
+
+
+      Update Code
+
+
+       int residentid = int.Parse(textBox1.Text);
+string name = textBox2.Text;
+string age = textBox3.Text;
+string email = textBox4.Text;
+string phone = textBox5.Text;
+string occupation = textBox6.Text;
+string unitname = textBox7.Text;
+string unittype = textBox8.Text;
+string address = textBox9.Text;
+string status = textBox10.Text;
+int amount = int.Parse(textBox11.Text);
+
+string query = "UPDATE House Set Name=@Name, Age=@Age, Email=@Email, Phone=@Phone, Occupation=@Occupation, UnitName=@UnitName, UnitType=@UnitType, Address=@Address, Status=@Status, Amount=@Amount WHERE ResidentID=@ResidentID";
+
+using (MySqlConnection conn = new DatabaseConnection().GetConnection())
+{
+    conn.Open();
+    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+    {
+        cmd.Parameters.AddWithValue("@ResidentID", residentid);
+        cmd.Parameters.AddWithValue("@Name", name);
+        cmd.Parameters.AddWithValue("@Age", age);
+        cmd.Parameters.AddWithValue("@Email", email);
+        cmd.Parameters.AddWithValue("@Phone", phone);
+        cmd.Parameters.AddWithValue("@Occupation", occupation);
+        cmd.Parameters.AddWithValue("@UnitName", unitname);
+        cmd.Parameters.AddWithValue("@UnitType", unittype);
+        cmd.Parameters.AddWithValue("@Address", address);
+        cmd.Parameters.AddWithValue("@Status", status);
+        cmd.Parameters.AddWithValue("@Amount", amount);
+
+        cmd.ExecuteNonQuery();
+    }
+}
+
+MessageBox.Show("Record Updated Successfully");
+ShowData();
+    
